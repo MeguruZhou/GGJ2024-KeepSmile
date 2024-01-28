@@ -179,8 +179,9 @@ public class Level1Manager : MonoBehaviour
     {
         Debug.Log("点击花朵1");
 
+        Vector3 vector3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //移动到花朵
-        cow.transform.DOMove(new Vector3(flower1.transform.position.x, flower1.transform.position.y), 2).OnComplete(delegate
+        cow.transform.DOMove(new Vector3(vector3.x, vector3.y), 2).OnComplete(delegate
         {
             //进食动画
             if (isCow2)
@@ -193,7 +194,8 @@ public class Level1Manager : MonoBehaviour
                     flowerBuff1.GetComponent<FlowerCtrl>().Create();
                     flowerBuff1.transform.DOMove(flowerBuff1.transform.position, 1).OnComplete(() => { flowerBuff1.GetComponent<FlowerCtrl>().Idle(); });
                 });
-            }else if (isCow3)
+            }
+            else if (isCow3)
             {
                 cow3.Eat();
                 flowerBuff1.transform.DOMove(flowerBuff1.transform.position, 2).OnComplete(() =>
@@ -215,8 +217,9 @@ public class Level1Manager : MonoBehaviour
     public void clickFlower2()
     {
         Debug.Log("点击花朵2");
+        Vector3 vector3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //移动到花朵
-        cow.transform.DOMove(new Vector3(flower2.transform.position.x, flower2.transform.position.y), 2).OnComplete(delegate
+        cow.transform.DOMove(new Vector3(vector3.x, vector3.y), 2).OnComplete(delegate
         {
             //进食动画
             if (isCow2)
