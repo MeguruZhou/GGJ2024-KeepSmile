@@ -30,6 +30,8 @@ public class Level1Manager : MonoBehaviour
     public CowCtrl cow3;
     public CowCtrl cow4;
 
+    bool isCow2;
+    bool isCow3;
     //吃草计数，吃1次牛1-牛2 ，吃3次牛2-牛3
     int grassCount;
     // Start is called before the first frame update
@@ -38,6 +40,8 @@ public class Level1Manager : MonoBehaviour
         //草初始化
         grassCount = 0;
         cow1.Idle();
+        isCow2 = false;
+        isCow3 = false;
     }
 
     /// <summary>
@@ -82,6 +86,8 @@ public class Level1Manager : MonoBehaviour
                 //执行完之后隐藏草
                 currentGrass.SetActive(false);
                 cow1.Upgrade();
+                isCow2 = true;
+                isCow3 = false;
                 cow.transform.DOMove(cow.transform.position, 2).OnComplete(delegate
                 {
                     //切换到牛2
@@ -117,6 +123,8 @@ public class Level1Manager : MonoBehaviour
                 //执行完之后隐藏草
                 currentGrass.SetActive(false);
                 cow2.Upgrade();
+                isCow3 = true;
+                isCow2 = false;
                 cow.transform.DOMove(cow.transform.position, 2).OnComplete(delegate
                 {
                     //切换到牛3
@@ -170,8 +178,35 @@ public class Level1Manager : MonoBehaviour
     public void clickFlower1()
     {
         Debug.Log("点击花朵1");
-        flower1.SetActive(false);
-        flowerBuff1.SetActive(true);
+
+        //移动到花朵
+        cow.transform.DOMove(new Vector3(flower1.transform.position.x, flower1.transform.position.y), 2).OnComplete(delegate
+        {
+            //进食动画
+            if (isCow2)
+            {
+                cow2.Eat();
+                flowerBuff1.transform.DOMove(flowerBuff1.transform.position, 2).OnComplete(() =>
+                {
+                    cow2.Idle();
+                    flower1.SetActive(false);
+                    flowerBuff1.GetComponent<FlowerCtrl>().Create();
+                    flowerBuff1.transform.DOMove(flowerBuff1.transform.position, 1).OnComplete(() => { flowerBuff1.GetComponent<FlowerCtrl>().Idle(); });
+                });
+            }else if (isCow3)
+            {
+                cow3.Eat();
+                flowerBuff1.transform.DOMove(flowerBuff1.transform.position, 2).OnComplete(() =>
+                {
+                    cow3.Idle();
+                    flower1.SetActive(false);
+                    flowerBuff1.GetComponent<FlowerCtrl>().Create();
+                    flowerBuff1.transform.DOMove(flowerBuff1.transform.position, 1).OnComplete(() => { flowerBuff1.GetComponent<FlowerCtrl>().Idle(); });
+                });
+            }
+        });
+
+
     }
 
     /// <summary>
@@ -180,8 +215,33 @@ public class Level1Manager : MonoBehaviour
     public void clickFlower2()
     {
         Debug.Log("点击花朵2");
-        flower2.SetActive(false);
-        flowerBuff2.SetActive(true);
+        //移动到花朵
+        cow.transform.DOMove(new Vector3(flower2.transform.position.x, flower2.transform.position.y), 2).OnComplete(delegate
+        {
+            //进食动画
+            if (isCow2)
+            {
+                cow2.Eat();
+                flowerBuff2.transform.DOMove(flowerBuff2.transform.position, 2).OnComplete(() =>
+                {
+                    cow2.Idle();
+                    flower2.SetActive(false);
+                    flowerBuff2.GetComponent<FlowerCtrl>().Create();
+                    flowerBuff2.transform.DOMove(flowerBuff2.transform.position, 1).OnComplete(() => { flowerBuff2.GetComponent<FlowerCtrl>().Idle(); });
+                });
+            }
+            else if (isCow3)
+            {
+                cow3.Eat();
+                flowerBuff2.transform.DOMove(flowerBuff2.transform.position, 2).OnComplete(() =>
+                {
+                    cow3.Idle();
+                    flower2.SetActive(false);
+                    flowerBuff2.GetComponent<FlowerCtrl>().Create();
+                    flowerBuff2.transform.DOMove(flowerBuff2.transform.position, 1).OnComplete(() => { flowerBuff2.GetComponent<FlowerCtrl>().Idle(); });
+                });
+            }
+        });
     }
 
     // <summary>
