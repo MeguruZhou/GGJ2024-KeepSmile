@@ -39,7 +39,7 @@ public class Level1Manager : MonoBehaviour
     /// <param name="grass"></param>
     public void clickGrass(GameObject grass)
     {
-        Debug.Log(""
+        Debug.Log("");
         grassCount++;
 
         if (grassCount == 1)
